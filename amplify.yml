@@ -2,14 +2,17 @@ version: 1
 backend:
   phases:
     install:
-    commands:
-      - npm install -g pnpm
+      commands:
+        - npm install -g pnpm
     build:
       commands:
         - pnpm install --frozen-lockfile --cache-dir .pnpm --offline
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 frontend:
   phases:
+    install:
+      commands:
+        - npm install -g pnpm
     build:
       commands:
         - pnpm run build
