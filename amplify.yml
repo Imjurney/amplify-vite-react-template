@@ -3,7 +3,8 @@ backend:
   phases:
     install:
       commands:
-        - npm install -g pnpm
+        - npm install pnpm # pnpm을 로컬 프로젝트 의존성으로 설치
+        - export PATH="$PATH:./node_modules/.bin" # PATH 환경 변수에 로컬 node_modules 바이너리 경로 추가
     build:
       commands:
         - pnpm install --frozen-lockfile --cache-dir .pnpm --offline
