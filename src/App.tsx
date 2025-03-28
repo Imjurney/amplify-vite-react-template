@@ -59,11 +59,11 @@ function App() {
 
   return (
     <>
-      <Authenticator>
+      {/* <Authenticator>
         {({ signOut, user }) => (
           <main>
             <h1> {user?.signInDetails?.loginId}'s todos</h1>
-            {/* <button onClick={createTodo}>+ new</button>
+            <button onClick={createTodo}>+ new</button>
             <ul>
               {todos.map((todo) => (
                 <li onClick={() => deleteTodo(todo.id)} key={todo.id}>
@@ -77,8 +77,8 @@ function App() {
               <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
                 Review next step of this tutorial.
               </a>
-            </div> */}
-            {/* <div>
+            </div>
+            <div>
               <input type="file" onChange={handleChange} />
               <button
                 onClick={() =>
@@ -97,45 +97,47 @@ function App() {
                 isResumable
               />
               <StorageImage alt="data" path="picture-submissions/IMG_8504.jpeg" />
-            </div> */}
+            </div>
 
             <div>
-              {/* <button type="button" onClick={sayHello}>
+              <button type="button" onClick={sayHello}>
                 sayHello Function
               </button>
-              <button onClick={fetchTodos}>Fetch Data</button> */}
+              <button onClick={fetchTodos}>Fetch Data</button>
               <button onClick={signOut}>Sign out</button>
             </div>
           </main>
         )}
-      </Authenticator>
-
-      <Flex direction="column">
-        <Flex direction="row">
-          <TextAreaField
-            autoResize
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            label="Description"
-          />
-          <Button onClick={handleClick}>Generate recipe</Button>
+        
+      </Authenticator> */}
+      <Authenticator>
+        <Flex direction="column">
+          <Flex direction="row">
+            <TextAreaField
+              autoResize
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              label="Description"
+            />
+            <Button onClick={handleClick}>Generate recipe</Button>
+          </Flex>
+          {isLoading ? (
+            <Loader variation="linear" />
+          ) : (
+            <>
+              <Text fontWeight="bold">{data?.name}</Text>
+              <View as="ul">
+                {data?.ingredients?.map((ingredient) => (
+                  <View as="li" key={ingredient}>
+                    {ingredient}
+                  </View>
+                ))}
+              </View>
+              <Text>{data?.instructions}</Text>
+            </>
+          )}
         </Flex>
-        {isLoading ? (
-          <Loader variation="linear" />
-        ) : (
-          <>
-            <Text fontWeight="bold">{data?.name}</Text>
-            <View as="ul">
-              {data?.ingredients?.map((ingredient) => (
-                <View as="li" key={ingredient}>
-                  {ingredient}
-                </View>
-              ))}
-            </View>
-            <Text>{data?.instructions}</Text>
-          </>
-        )}
-      </Flex>
+      </Authenticator>
     </>
   );
 }

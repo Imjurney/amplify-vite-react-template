@@ -35,7 +35,7 @@ const schema = a.schema({
       systemPrompt: "You are a helpful assistant that generates recipes.",
     })
     .arguments({
-      description: a.string(),
+      description: a.string().required(),
     })
     .returns(
       a.customType({
