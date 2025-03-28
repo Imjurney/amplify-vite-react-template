@@ -1,5 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
-
+import { sayHello } from "../functions/say-hello/resource";
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
 adding a new "isDone" field as a boolean. The authorization rule below
@@ -11,7 +11,40 @@ const schema = a.schema({
     .model({
       content: a.string(),
     })
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [allow.owner()]),
+
+  sayHello: a
+    .query()
+    .arguments({
+      name: a.string(),
+    })
+    .returns(a.string())
+    .handler(a.handler.function(sayHello))
+    .authorization((allow) => [allow.authenticated()]),
+
+  chat: a
+    .conversation({
+      aiModel: a.ai.model("Claude 3.5 Haiku"),
+      systemPrompt: "You are a helpful assistant",
+    })
+    .authorization((allow) => allow.owner()),
+
+  generateRecipe: a
+    .generation({
+      aiModel: a.ai.model("Claude 3.5 Haiku"),
+      systemPrompt: "You are a helpful assistant that generates recipes.",
+    })
+    .arguments({
+      description: a.string(),
+    })
+    .returns(
+      a.customType({
+        name: a.string(),
+        ingredients: a.string().array(),
+        instructions: a.string(),
+      })
+    )
+    .authorization((allow) => allow.authenticated()),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -19,11 +52,12 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
-    // API Key is used for a.allow.public() rules
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
-    },
+    defaultAuthorizationMode: "userPool",
+    // defaultAuthorizationMode: "apiKey",
+    // // API Key is used for a.allow.public() rules
+    // apiKeyAuthorizationMode: {
+    //   expiresInDays: 30,
+    // },
   },
 });
 

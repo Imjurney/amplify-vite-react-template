@@ -21,5 +21,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  "exclude": ["wrap-ansi"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
